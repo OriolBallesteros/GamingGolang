@@ -1,31 +1,13 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 const (
-	screenWidht  = 600
-	screenHeight = 800
+	screenWidht  = 550
+	screenHeight = 700
 )
-
-//Get and set img
-func textureFromBMP(renderer *sdl.Renderer, filename string) *sdl.Texture {
-	img, err := sdl.LoadBMP(filename)
-	if err != nil {
-		panic(fmt.Errorf("loading %v: %v", filename, err))
-	}
-	defer img.Free()
-
-	tex, err := renderer.CreateTextureFromSurface(img)
-	if err != nil {
-		panic(fmt.Errorf("Creating texture from %v: %v", filename, err))
-	}
-
-	return tex
-}
 
 func main() {
 
@@ -49,16 +31,16 @@ func main() {
 
 	//Load img and set it to renderer
 	player := newPlayer(renderer)
+	elements = append(elements, player)
 
-	var enemies []basicEnemy
 	for i := 0; i < 5; i++ {
 		for j := 0; j < 3; j++ {
 			x := (float64(i)/5)*screenWidht + (basicEnemySize / 2)
 			y := float64(j)*basicEnemySize + (basicEnemySize / 2)
 
-			enemy := newBasicEnemy(renderer, x, y)
+			enemy := newBasicEnemy(renderer, vector{x, y})
 
-			enemies = append(enemies, enemy)
+			elements = append(elements, enemy)
 		}
 	}
 
@@ -77,12 +59,14 @@ func main() {
 		renderer.SetDrawColor(255, 255, 255, 255)
 		renderer.Clear()
 
-		//Copy - what where (which image and where in the screen)
-		player.draw(renderer)
-		player.update()
+		for _, elem := range elements {
+			if elem.active {
+				err = elem.update()
+				errHndl("Updating elment", err)
 
-		for _, enemy := range enemies {
-			enemy.draw(renderer)
+				err = elem.draw(renderer)
+				errHndl("Drawing element", err)
+			}
 		}
 
 		for _, bul := range bulletPool {
