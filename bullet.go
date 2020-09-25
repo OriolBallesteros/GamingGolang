@@ -18,7 +18,13 @@ func newBullet(renderer *sdl.Renderer) *element {
 	mover := newBulletMover(bullet, bulletSpeed)
 	bullet.addComponent(mover)
 
-	bullet.active = false
+	col := circle{
+		center: bullet.position,
+		radius: 6,
+	}
+	bullet.collisions = append(bullet.collisions, col)
+
+	bullet.tag = "bullet"
 
 	return bullet
 }

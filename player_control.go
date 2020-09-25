@@ -41,11 +41,11 @@ func (mover *keyboardMover) onUpdate() error {
 	return nil
 }
 
-func (mover *keyboardShooter) onDraw(renderer *sdl.Renderer) error {
+func (mover *keyboardMover) onDraw(renderer *sdl.Renderer) error {
 	return nil
 }
 
-func (mover *keyboardMover) onDraw(renderer *sdl.Renderer) error {
+func (mover *keyboardMover) onCollision(other *element) error {
 	return nil
 }
 
@@ -76,6 +76,14 @@ func (mover *keyboardShooter) onUpdate() error {
 		}
 	}
 
+	return nil
+}
+
+func (mover *keyboardShooter) onDraw(renderer *sdl.Renderer) error {
+	return nil
+}
+
+func (mover *keyboardShooter) onCollision(other *element) error {
 	return nil
 }
 

@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/veandco/go-sdl2/sdl"
+
+	e "github.com/OriolBallesteros/gamingingo/errhndl"
 )
 
 const (
@@ -13,7 +15,7 @@ func main() {
 
 	//SDL init
 	err := sdl.Init(sdl.INIT_EVERYTHING)
-	errHndl("Initializing SDL:", err)
+	e.ErrHndl("Initializing SDL:", err)
 
 	//Window creation
 	window, err := sdl.CreateWindow(
@@ -21,12 +23,12 @@ func main() {
 		sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		screenWidht, screenHeight,
 		sdl.WINDOW_OPENGL)
-	errHndl("Initializing window:", err)
+	e.ErrHndl("Initializing window:", err)
 	defer window.Destroy()
 
 	//Renderer creation
 	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
-	errHndl("Initializing renderer:", err)
+	e.ErrHndl("Initializing renderer:", err)
 	defer renderer.Destroy()
 
 	//Load img and set it to renderer
@@ -62,16 +64,20 @@ func main() {
 		for _, elem := range elements {
 			if elem.active {
 				err = elem.update()
-				errHndl("Updating elment", err)
+				e.ErrHndl("Updating elment", err)
 
 				err = elem.draw(renderer)
-				errHndl("Drawing element", err)
+				e.ErrHndl("Drawing element", err)
 			}
 		}
 
 		for _, bul := range bulletPool {
 			bul.draw(renderer)
 			bul.update()
+		}
+
+		if err := checkCollisions(); err != nil {
+			e.ErrHndl("Checking collisions:", err)
 		}
 
 		renderer.Present()
