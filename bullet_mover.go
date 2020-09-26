@@ -26,8 +26,8 @@ func (mover *bulletMover) onDraw(renderer *sdl.Renderer) error {
 func (mover *bulletMover) onUpdate() error {
 	cont := mover.container
 
-	cont.position.x += bulletSpeed * math.Cos(cont.rotation) //pre-stablished movement math
-	cont.position.y += bulletSpeed * math.Sin(cont.rotation)
+	cont.position.x += bulletSpeed * math.Cos(cont.rotation) * delta //pre-stablished movement math
+	cont.position.y += bulletSpeed * math.Sin(cont.rotation) * delta
 
 	if cont.position.x > screenWidht || cont.position.x < 0 ||
 		cont.position.y > screenHeight || cont.position.y < 0 { //reload
