@@ -12,7 +12,7 @@ const (
 func newBullet(renderer *sdl.Renderer) *element {
 	bullet := &element{}
 
-	sr := newSpriteRenderer(bullet, renderer, "sprites/player_bullet.bmp")
+	sr := newSpriteRendererOnTuto(bullet, renderer, "sprites/player_bullet.bmp")
 	bullet.addComponent(sr)
 
 	mover := newBulletMover(bullet, bulletSpeed)

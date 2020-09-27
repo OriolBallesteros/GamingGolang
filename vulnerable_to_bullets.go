@@ -6,10 +6,14 @@ import (
 
 type vulnerableToBullet struct {
 	container *element
+	animator  *animator
 }
 
 func newVulnerableToBullets(container *element) *vulnerableToBullet {
-	return &vulnerableToBullet{container: container}
+	return &vulnerableToBullet{
+		container: container,
+		animator:  container.getComponent(&animator{}).(*animator),
+	}
 }
 
 func (vtb *vulnerableToBullet) onDraw(renderer *sdl.Renderer) error {

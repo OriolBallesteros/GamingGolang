@@ -16,8 +16,6 @@ func drawTexture(tex *sdl.Texture,
 		panic(fmt.Errorf("Querying texture: %v", err))
 	}
 
-	// x := sr.container.position.x - sr.width/2.0
-	// y := sr.container.position.y - sr.height/2.0
 	position.x -= float64(width) / 2.0
 	position.y -= float64(height) / 2.0
 
@@ -29,4 +27,19 @@ func drawTexture(tex *sdl.Texture,
 		&sdl.Point{X: int32(width) / 2, Y: int32(height) / 2},
 		sdl.FLIP_NONE)
 
+}
+
+func loadTextureFromBMP(filename string, renderer *sdl.Renderer) (*sdl.Texture, error) {
+	img, err := sdl.LoadBMP(filename)
+	if err != nil {
+		return nil, fmt.Errorf("loading %v: %v", filename, err)
+	}
+	defer img.Free()
+
+	tex, err := renderer.CreateTextureFromSurface(img)
+	if err != nil {
+		return nil, fmt.Errorf("Creating texture from %v: %v", filename, err)
+	}
+
+	return tex, nil
 }

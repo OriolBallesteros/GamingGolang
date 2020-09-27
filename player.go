@@ -22,7 +22,7 @@ func newPlayer(renderer *sdl.Renderer) *element {
 	}
 	player.active = true
 
-	sr := newSpriteRenderer(player, renderer, "sprites/player.bmp")
+	sr := newSpriteRendererOnTuto(player, renderer, "sprites/player.bmp")
 	player.addComponent(sr)
 
 	mover := newKeyboardMover(player, playerSpeed)
