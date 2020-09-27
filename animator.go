@@ -14,6 +14,7 @@ type animator struct {
 	sequences       map[string]*sequence
 	current         string
 	lastFrameChange time.Time
+	finished        bool
 }
 
 func newAnimator(container *element,
@@ -35,7 +36,7 @@ func (an *animator) onUpdate() error {
 	frameInterval := float64(time.Second) / sequence.sampleRate
 
 	if time.Since(an.lastFrameChange) >= time.Duration(frameInterval) {
-		sequence.nextFrame()
+		an.finished = sequence.nextFrame()
 		an.lastFrameChange = time.Now()
 	}
 
@@ -54,6 +55,11 @@ func (an *animator) onDraw(renderer *sdl.Renderer) error {
 
 func (an *animator) onCollision(other *element) error {
 	return nil
+}
+
+func (an *animator) setSequence(name string) {
+	an.current = name
+	an.lastFrameChange = time.Now()
 }
 
 type sequence struct {
@@ -91,12 +97,16 @@ func (seq *sequence) texture() *sdl.Texture {
 	return seq.textures[seq.frame]
 }
 
-func (seq *sequence) nextFrame() {
+func (seq *sequence) nextFrame() bool {
 	if seq.frame == len(seq.textures)-1 {
 		if seq.loop {
 			seq.frame = 0
+		} else {
+			return true
 		}
 	} else {
 		seq.frame++
 	}
+
+	return false
 }

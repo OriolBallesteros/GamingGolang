@@ -13,7 +13,7 @@ type spriteRenderer struct {
 	width, height float64
 }
 
-func newSpriteRendererOnTuto(container *element, renderer *sdl.Renderer, filename string) *spriteRenderer {
+func newSpriteRenderer(container *element, renderer *sdl.Renderer, filename string) *spriteRenderer {
 	sr := &spriteRenderer{}
 	var err error
 

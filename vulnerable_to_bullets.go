@@ -21,12 +21,16 @@ func (vtb *vulnerableToBullet) onDraw(renderer *sdl.Renderer) error {
 }
 
 func (vtb *vulnerableToBullet) onUpdate() error {
+	if vtb.animator.finished && vtb.animator.current == "destroy" {
+		vtb.container.active = false
+	}
+
 	return nil
 }
 
 func (vtb *vulnerableToBullet) onCollision(other *element) error {
 	if other.tag == "bullet" {
-		vtb.container.active = false
+		vtb.animator.setSequence("destroy")
 	}
 	return nil
 }
