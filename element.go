@@ -26,6 +26,8 @@ type element struct {
 	components []component
 }
 
+var elements []*element
+
 func (elem *element) draw(renderer *sdl.Renderer) error {
 	for _, comp := range elem.components {
 		err := comp.onDraw(renderer)
@@ -79,5 +81,3 @@ func (elem *element) getComponent(withType component) component {
 
 	panic(fmt.Sprintf("No component with type %v", reflect.TypeOf(withType)))
 }
-
-var elements []*element
